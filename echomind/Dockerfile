@@ -7,8 +7,8 @@ LABEL io.hass.description="Personal Memory Layer for AI Applications with Home A
 LABEL io.hass.version="1.0.0"
 LABEL io.hass.slug="echomind"
 LABEL io.hass.arch="$BUILD_ARCH"
-LABEL maintainer="mercuryin <[tu_email_o_contacto_aqui]>" # Reemplaza con tu info
-LABEL io.hass.url="https://github.com/mercuryin/EchoMind_ha" # URL del repo del addon/componente
+LABEL maintainer="mercuryin <[tu_email_o_contacto_aqui]>" 
+LABEL io.hass.url="https://github.com/mercuryin/EchoMind_ha"
 
 # Instalar dependencias del sistema y herramientas base
 RUN apk add --no-cache \
