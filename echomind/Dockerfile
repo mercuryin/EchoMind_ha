@@ -18,6 +18,8 @@ RUN apk add --no-cache \
     jq \
     python3 \
     py3-pip \
+    py3-setuptools \
+    py3-wheel \
     build-base \
     python3-dev \
     gcc \
@@ -27,7 +29,6 @@ RUN apk add --no-cache \
     cargo \
     openssl-dev \
     libffi-dev \
-    py3-setuptools \
     ca-certificates && \
     update-ca-certificates
 
@@ -37,22 +38,19 @@ WORKDIR /app
 # Clonar el repositorio original de your-memory
 RUN git clone https://github.com/jonathan-politzki/your-memory.git .
 
-# Actualizar pip y wheel
-RUN pip3 install --no-cache-dir --upgrade pip wheel setuptools
-
-# Instalar dependencias de Python una por una con verbosidad
-RUN pip3 install --no-cache-dir -v qdrant-client==1.9.1 && \
-    pip3 install --no-cache-dir -v pydantic==2.7.3 && \
-    pip3 install --no-cache-dir -v openai==1.33.0 && \
-    pip3 install --no-cache-dir -v posthog==3.5.0 && \
-    pip3 install --no-cache-dir -v pytz==2024.1 && \
-    pip3 install --no-cache-dir -v sqlalchemy==2.0.31 && \
-    pip3 install --no-cache-dir -v langchain-neo4j==0.4.0 && \
-    pip3 install --no-cache-dir -v neo4j==5.23.1 && \
-    pip3 install --no-cache-dir -v rank-bm25==0.2.2
+# Instalar dependencias de Python una por una
+RUN pip3 install --no-cache-dir qdrant-client==1.9.1 && \
+    pip3 install --no-cache-dir pydantic==2.7.3 && \
+    pip3 install --no-cache-dir openai==1.33.0 && \
+    pip3 install --no-cache-dir posthog==3.5.0 && \
+    pip3 install --no-cache-dir pytz==2024.1 && \
+    pip3 install --no-cache-dir sqlalchemy==2.0.31 && \
+    pip3 install --no-cache-dir langchain-neo4j==0.4.0 && \
+    pip3 install --no-cache-dir neo4j==5.23.1 && \
+    pip3 install --no-cache-dir rank-bm25==0.2.2
 
 # Limpiar herramientas de compilación
-RUN apk del build-base python3-dev gcc musl-dev linux-headers rust cargo openssl-dev libffi-dev py3-setuptools
+RUN apk del build-base python3-dev gcc musl-dev linux-headers rust cargo openssl-dev libffi-dev
 
 # Copiar archivos de configuración y scripts específicos del addon
 COPY rootfs/ / 
