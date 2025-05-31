@@ -10,7 +10,7 @@ LABEL io.hass.arch="$BUILD_ARCH"
 LABEL maintainer="mercuryin <[tu_email_o_contacto_aqui]>" 
 LABEL io.hass.url="https://github.com/mercuryin/EchoMind_ha"
 
-# Instalar dependencias básicas
+# Instalar dependencias básicas y de compilación
 RUN apk add --no-cache \
     bash \
     curl \
@@ -24,11 +24,16 @@ RUN apk add --no-cache \
     musl-dev \
     linux-headers \
     rust \
-    cargo
+    cargo \
+    openssl-dev \
+    libffi-dev \
+    py3-setuptools \
+    ca-certificates && \
+    update-ca-certificates
 
-# Actualizar pip e instalar poetry
-RUN pip3 install --no-cache-dir --upgrade pip && \
-    pip3 install --no-cache-dir poetry==1.7.1
+# Instalar Poetry usando el instalador oficial
+RUN curl -sSL https://install.python-poetry.org | python3 - && \
+    ln -s /root/.local/bin/poetry /usr/local/bin/poetry
 
 # Configurar poetry
 RUN poetry config virtualenvs.create false && \
@@ -44,7 +49,7 @@ RUN git clone https://github.com/jonathan-politzki/your-memory.git .
 RUN poetry install --no-dev --no-interaction --no-ansi
 
 # Limpiar herramientas de compilación
-RUN apk del build-base python3-dev gcc musl-dev linux-headers rust cargo
+RUN apk del build-base python3-dev gcc musl-dev linux-headers rust cargo openssl-dev libffi-dev py3-setuptools
 
 # Copiar archivos de configuración y scripts específicos del addon
 COPY rootfs/ / 
