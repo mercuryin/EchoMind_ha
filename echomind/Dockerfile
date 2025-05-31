@@ -10,6 +10,11 @@ LABEL io.hass.arch="$BUILD_ARCH"
 LABEL maintainer="mercuryin <[tu_email_o_contacto_aqui]>" 
 LABEL io.hass.url="https://github.com/mercuryin/EchoMind_ha"
 
+# Actualizar repositorios y limpiar caché
+RUN apk update && \
+    apk upgrade && \
+    rm -rf /var/cache/apk/*
+
 # Instalar dependencias del sistema y herramientas base
 RUN apk add --no-cache \
     bash \
@@ -24,10 +29,15 @@ RUN apk add --no-cache \
     python3-dev \
     gcc \
     musl-dev \
-    linux-headers
+    linux-headers \
+    rust \
+    cargo
 
 # Instalar dependencias de Python
 RUN pip3 install --no-cache-dir --upgrade pip && \
+    pip3 install --no-cache-dir \
+    wheel \
+    setuptools && \
     pip3 install --no-cache-dir \
     chromadb \
     sentence-transformers
@@ -36,16 +46,12 @@ RUN pip3 install --no-cache-dir --upgrade pip && \
 WORKDIR /app
 
 # Clonar tu fork de EchoMind
-RUN git clone https://github.com/mercuryin/your-memory.git . 
-# Si tienes una rama específica para el addon, clónala:
-# RUN git clone -b ha-addon --single-branch https://github.com/mercuryin/your-memory.git .
+RUN git clone https://github.com/mercuryin/your-memory.git .
 
 # Instalar dependencias de Node.js
-# Usar --legacy-peer-deps si hay problemas con dependencias de pares, común en algunos proyectos Node
 RUN npm install --production --legacy-peer-deps
 
 # Copiar archivos de configuración y scripts específicos del addon
-# Esto incluye el script de inicio y cualquier script de setup
 COPY rootfs/ / 
 
 # Hacer ejecutables los scripts importantes
