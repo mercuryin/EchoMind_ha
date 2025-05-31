@@ -31,22 +31,24 @@ RUN apk add --no-cache \
     ca-certificates && \
     update-ca-certificates
 
-# Instalar Poetry usando el instalador oficial
-RUN curl -sSL https://install.python-poetry.org | python3 - && \
-    ln -s /root/.local/bin/poetry /usr/local/bin/poetry
-
-# Configurar poetry
-RUN poetry config virtualenvs.create false && \
-    poetry config installer.max-workers 10
-
 # Crear directorio de trabajo
 WORKDIR /app
 
 # Clonar el repositorio original de your-memory
 RUN git clone https://github.com/jonathan-politzki/your-memory.git .
 
-# Instalar dependencias de Python con más verbosidad
-RUN poetry install --no-dev --no-interaction --no-ansi -vv
+# Instalar dependencias de Python directamente con pip
+RUN pip3 install --no-cache-dir --upgrade pip && \
+    pip3 install --no-cache-dir \
+    qdrant-client==1.9.1 \
+    pydantic==2.7.3 \
+    openai==1.33.0 \
+    posthog==3.5.0 \
+    pytz==2024.1 \
+    sqlalchemy==2.0.31 \
+    langchain-neo4j==0.4.0 \
+    neo4j==5.23.1 \
+    rank-bm25==0.2.2
 
 # Limpiar herramientas de compilación
 RUN apk del build-base python3-dev gcc musl-dev linux-headers rust cargo openssl-dev libffi-dev py3-setuptools
