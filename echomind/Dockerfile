@@ -10,16 +10,23 @@ LABEL io.hass.arch="$BUILD_ARCH"
 LABEL maintainer="mercuryin <[tu_email_o_contacto_aqui]>" 
 LABEL io.hass.url="https://github.com/mercuryin/EchoMind_ha"
 
-# Instalar dependencias básicas
+# Instalar dependencias básicas y herramientas de compilación
 RUN apk add --no-cache \
     bash \
     curl \
     git \
     jq \
-    nodejs \
-    npm \
     python3 \
-    py3-pip
+    py3-pip \
+    build-base \
+    python3-dev \
+    gcc \
+    musl-dev \
+    linux-headers
+
+# Instalar Node.js 18 (LTS)
+RUN apk add --no-cache nodejs npm && \
+    npm install -g npm@latest
 
 # Crear directorio de trabajo para la aplicación Node.js
 WORKDIR /app
@@ -27,8 +34,11 @@ WORKDIR /app
 # Clonar el repositorio original de your-memory
 RUN git clone https://github.com/jonathan-politzki/your-memory.git .
 
-# Instalar dependencias de Node.js
-RUN npm install --production --legacy-peer-deps
+# Instalar dependencias de Node.js con más verbosidad
+RUN npm install --production --legacy-peer-deps --verbose
+
+# Limpiar herramientas de compilación para reducir el tamaño de la imagen
+RUN apk del build-base python3-dev gcc musl-dev linux-headers
 
 # Copiar archivos de configuración y scripts específicos del addon
 COPY rootfs/ / 
