@@ -2,7 +2,6 @@ name: "EchoMind - AI Memory Layer"
 description: "Personal Memory Layer for AI Applications with Home Assistant Integration. All memory remains local."
 version: "1.0.0"
 slug: "echomind"
-init: false
 arch:
   - armhf
   - armv7
@@ -40,4 +39,4 @@ homeassistant_api: true # Needs access to Home Assistant API
 hassio_api: true # Needs access to Supervisor API (e.g. for notifications, addon info)
 # Potentially use hassio_role for more fine-grained permissions in the future
 # hassio_role: default
-image: "ghcr.io/mercuryin/echomind-ha-addon" # Placeholder, update with your actual image
+image: "ghcr.io/mercuryin/echomind-ha-addon/{arch}"

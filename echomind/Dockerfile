@@ -31,9 +31,7 @@ RUN pip3 install uv && \
 # Crear directorio de trabajo para la aplicación Node.js
 WORKDIR /app
 
-# Clonar tu fork de EchoMind (anteriormente your-memory)
-# Asegúrate de que el nombre del repositorio sea el correcto después de forkear
-# Si tu fork se llama 'your-memory', déjalo así. Si lo renombras a 'EchoMind', cámbialo.
+# Clonar tu fork de EchoMind
 RUN git clone https://github.com/mercuryin/your-memory.git . 
 # Si tienes una rama específica para el addon, clónala:
 # RUN git clone -b ha-addon --single-branch https://github.com/mercuryin/your-memory.git .
@@ -54,4 +52,4 @@ RUN chmod +x /run.sh && \
 EXPOSE 8765 3000
 
 # Comando por defecto para iniciar el addon
-CMD ["/run.sh"]
+CMD [ "/run.sh" ]
