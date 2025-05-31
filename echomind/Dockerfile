@@ -35,18 +35,24 @@ RUN apk add --no-cache \
 # Crear directorio de trabajo
 WORKDIR /app
 
+# Verificar versión de Python
+RUN python3 --version && pip3 --version
+
 # Clonar el repositorio original de your-memory
 RUN git clone https://github.com/jonathan-politzki/your-memory.git .
 
-# Instalar dependencias de Python una por una
-RUN pip3 install --no-cache-dir qdrant-client==1.9.1 && \
+# Instalar dependencias base primero
+RUN pip3 install --no-cache-dir wheel setuptools
+
+# Instalar dependencias de Python en orden específico
+RUN pip3 install --no-cache-dir pytz==2024.1 && \
     pip3 install --no-cache-dir pydantic==2.7.3 && \
+    pip3 install --no-cache-dir sqlalchemy==2.0.31 && \
+    pip3 install --no-cache-dir neo4j==5.23.1 && \
+    pip3 install --no-cache-dir qdrant-client==1.9.1 && \
     pip3 install --no-cache-dir openai==1.33.0 && \
     pip3 install --no-cache-dir posthog==3.5.0 && \
-    pip3 install --no-cache-dir pytz==2024.1 && \
-    pip3 install --no-cache-dir sqlalchemy==2.0.31 && \
     pip3 install --no-cache-dir langchain-neo4j==0.4.0 && \
-    pip3 install --no-cache-dir neo4j==5.23.1 && \
     pip3 install --no-cache-dir rank-bm25==0.2.2
 
 # Limpiar herramientas de compilación
