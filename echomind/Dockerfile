@@ -10,6 +10,9 @@ LABEL io.hass.arch="$BUILD_ARCH"
 LABEL maintainer="mercuryin <[tu_email_o_contacto_aqui]>" 
 LABEL io.hass.url="https://github.com/mercuryin/EchoMind_ha"
 
+# Actualizar repositorios y limpiar caché
+RUN apk update && apk upgrade && rm -rf /var/cache/apk/*
+
 # Instalar dependencias básicas y de compilación
 RUN apk add --no-cache \
     bash \
@@ -20,6 +23,13 @@ RUN apk add --no-cache \
     py3-pip \
     py3-setuptools \
     py3-wheel \
+    py3-cryptography \
+    py3-requests \
+    py3-urllib3 \
+    py3-certifi \
+    py3-chardet \
+    py3-idna \
+    py3-six \
     build-base \
     python3-dev \
     gcc \
@@ -40,9 +50,6 @@ RUN python3 --version && pip3 --version
 
 # Clonar el repositorio original de your-memory
 RUN git clone https://github.com/jonathan-politzki/your-memory.git .
-
-# Instalar dependencias base primero
-RUN pip3 install --no-cache-dir wheel setuptools
 
 # Instalar dependencias de Python en orden específico
 RUN pip3 install --no-cache-dir pytz==2024.1 && \
