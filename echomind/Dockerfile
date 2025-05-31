@@ -1,5 +1,5 @@
 ARG BUILD_FROM
-FROM $BUILD_FROM
+FROM ${BUILD_FROM}
 
 # Addon metadata
 LABEL io.hass.name="EchoMind - AI Memory Layer"
