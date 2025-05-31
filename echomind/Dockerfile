@@ -18,17 +18,22 @@ RUN apk add --no-cache \
     jq \
     python3 \
     py3-pip \
-    nodejs \
-    npm
+    build-base \
+    python3-dev \
+    gcc \
+    musl-dev \
+    linux-headers
 
-# Crear directorio de trabajo para la aplicación Node.js
+# Crear directorio de trabajo
 WORKDIR /app
 
 # Clonar el repositorio original de your-memory
 RUN git clone https://github.com/jonathan-politzki/your-memory.git .
 
-# Instalar dependencias de Node.js
-RUN npm install
+# Instalar dependencias de Python
+RUN pip3 install --no-cache-dir poetry && \
+    poetry config virtualenvs.create false && \
+    poetry install --no-dev
 
 # Copiar archivos de configuración y scripts específicos del addon
 COPY rootfs/ / 
