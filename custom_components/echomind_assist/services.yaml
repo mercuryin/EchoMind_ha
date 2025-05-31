@@ -1,0 +1,120 @@
+# Describes the services provided by the EchoMind Assist integration.
+
+add_memory:
+  name: "Add Memory to EchoMind"
+  description: "Adds a piece of text information to the EchoMind memory. Useful for explicit memory storage via automations or scripts."
+  fields:
+    text:
+      name: "Text"
+      description: "The text content of the memory to be added. This is the core information to store."
+      required: true
+      example: "The user prefers the living room lights颜色 to be warm white in the evening."
+      selector:
+        text:
+          multiline: true
+    context:
+      name: "Context"
+      description: "Optional. A dictionary of key-value pairs providing context for the memory (e.g., source, device, tags)."
+      example: '{"source": "lighting_automation", "room": "living_room", "importance": "high"}'
+      selector:
+        object: {}
+    user_id:
+      name: "User ID"
+      description: "Optional. A unique identifier for the user this memory pertains to. Defaults to a generic ID if not provided."
+      example: "user_abc_123"
+      selector:
+        text:
+
+search_memory:
+  name: "Search Memories in EchoMind"
+  description: "Searches the EchoMind memory for information matching the query. Returns a list of matching memories."
+  fields:
+    query:
+      name: "Query"
+      description: "The text to search for in the memories. Can be a question or keywords."
+      required: true
+      example: "What are the user\'s lighting preferences for the living room?"
+      selector:
+        text:
+          multiline: false
+    limit:
+      name: "Limit"
+      description: "Optional. The maximum number of matching memories to return. Defaults to 5."
+      example: 3
+      selector:
+        number:
+          min: 1
+          max: 50
+          mode: slider # or box
+    # user_id:
+    #   name: "User ID"
+    #   description: "Optional. Filter memories for a specific user. If not provided, searches across all users unless API defaults otherwise."
+    #   example: "user_abc_123"
+    #   selector:
+    #     text:
+  # Specifies that this service can return a response directly to the caller
+  # The response will be available in the script/automation using `response_variable`
+  response:
+    description: "The search results found in EchoMind."
+    fields:
+      results:
+        name: "Results"
+        description: "A list of memory objects matching the search query."
+        example: '[{"text": "User prefers warm white light...", "context": {...}, "score": 0.85}]'
+        selector:
+          object: {}
+
+clear_memory:
+  name: "Clear Memories from EchoMind"
+  description: "Clears memories from EchoMind. Can be filtered by user ID or age. WARNING: Use with caution, as this can permanently delete data."
+  fields:
+    user_id:
+      name: "User ID"
+      description: "Optional. If provided, only memories associated with this user ID will be cleared."
+      example: "user_abc_123"
+      selector:
+        text:
+    days_old:
+      name: "Days Old"
+      description: "Optional. If provided, only memories older than this number of days will be cleared."
+      example: 30
+      selector:
+        number:
+          min: 1
+          max: 3650 # Approx 10 years
+          mode: box
+
+get_memory_stats:
+  name: "Get Memory Statistics from EchoMind"
+  description: "Retrieves statistics about the memories stored in EchoMind, such as total count."
+  # No fields needed for this service call, unless you want to filter stats (e.g., for a user_id)
+  # response:
+  #   description: "Statistics about the EchoMind memory."
+  #   fields:
+  #     total_memories:
+  #       name: "Total Memories"
+  #       description: "The total number of memories currently stored."
+  #       example: 1250
+  #       selector:
+  #         number:
+  #           min: 0
+  #           mode: box
+  #     # Add other stats as your API provides them, e.g., per user, last updated, etc.
+  #     last_updated_timestamp:
+  #       name: "Last Updated Timestamp"
+  #       description: "Timestamp of the most recent memory addition or modification."
+  #       example: "2023-10-27T10:30:00Z"
+  #       selector:
+  #         text:
+  response:
+    description: "Statistics about the EchoMind memory. The exact fields depend on the addon API response."
+    fields:
+      # This is a generic placeholder. Your actual addon API will determine the fields.
+      # For example, if your /api/stats returns {"total_memories": 100, "some_other_stat": "value"}
+      # then you would define those fields here.
+      statistics:
+        name: "Statistics"
+        description: "A dictionary containing various memory statistics."
+        example: '{"total_memories": 1250, "memories_today": 15, "users_with_memories": 5}'
+        selector:
+          object: {}
