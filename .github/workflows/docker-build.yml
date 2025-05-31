@@ -8,7 +8,6 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  BUILD_FROM: homeassistant/amd64-base:3.19
 
 jobs:
   build-and-push:
@@ -43,13 +42,35 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build and push Docker image
+      - name: Build and push Docker image for amd64
         uses: docker/build-push-action@v5
         with:
           context: ./echomind
           push: true
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          platforms: linux/amd64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            BUILD_FROM=${{ env.BUILD_FROM }} 
+            BUILD_FROM=ghcr.io/hassio-addons/base/amd64:14.0.0
+
+      - name: Build and push Docker image for arm64
+        uses: docker/build-push-action@v5
+        with:
+          context: ./echomind
+          push: true
+          platforms: linux/arm64
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            BUILD_FROM=ghcr.io/hassio-addons/base/aarch64:14.0.0
+
+      - name: Build and push Docker image for armv7
+        uses: docker/build-push-action@v5
+        with:
+          context: ./echomind
+          push: true
+          platforms: linux/arm/v7
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            BUILD_FROM=ghcr.io/hassio-addons/base/armv7:14.0.0 
