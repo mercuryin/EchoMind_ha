@@ -19,12 +19,16 @@ RUN apk add --no-cache \
     nodejs \
     npm \
     python3 \
-    py3-pip
+    py3-pip \
+    build-base \
+    python3-dev \
+    gcc \
+    musl-dev \
+    linux-headers
 
-# Instalar uv para gestión de paquetes Python y luego las dependencias de Python
-# Esto permite un build más rápido de las dependencias de Python
-RUN pip3 install uv && \
-    uv pip install --system \
+# Instalar dependencias de Python
+RUN pip3 install --no-cache-dir --upgrade pip && \
+    pip3 install --no-cache-dir \
     chromadb \
     sentence-transformers
 
