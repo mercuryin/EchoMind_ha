@@ -51,7 +51,8 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            BUILD_FROM=ghcr.io/home-assistant/amd64-base:alpine3.19
+            BUILD_FROM=ghcr.io/home-assistant/amd64-base:alpine3.18
+          pull: true
 
       - name: Build and push Docker image for arm64
         uses: docker/build-push-action@v5
@@ -62,7 +63,8 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            BUILD_FROM=ghcr.io/home-assistant/aarch64-base:alpine3.19
+            BUILD_FROM=ghcr.io/home-assistant/aarch64-base:alpine3.18
+          pull: true
 
       - name: Build and push Docker image for armv7
         uses: docker/build-push-action@v5
@@ -73,4 +75,5 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            BUILD_FROM=ghcr.io/home-assistant/armv7-base:alpine3.19 
+            BUILD_FROM=ghcr.io/home-assistant/armv7-base:alpine3.18
+          pull: true 
