@@ -22,7 +22,17 @@ RUN apk add --no-cache \
     python3-dev \
     gcc \
     musl-dev \
-    linux-headers
+    linux-headers \
+    rust \
+    cargo
+
+# Actualizar pip e instalar poetry
+RUN pip3 install --no-cache-dir --upgrade pip && \
+    pip3 install --no-cache-dir poetry==1.7.1
+
+# Configurar poetry
+RUN poetry config virtualenvs.create false && \
+    poetry config installer.max-workers 10
 
 # Crear directorio de trabajo
 WORKDIR /app
@@ -31,9 +41,10 @@ WORKDIR /app
 RUN git clone https://github.com/jonathan-politzki/your-memory.git .
 
 # Instalar dependencias de Python
-RUN pip3 install --no-cache-dir poetry && \
-    poetry config virtualenvs.create false && \
-    poetry install --no-dev
+RUN poetry install --no-dev --no-interaction --no-ansi
+
+# Limpiar herramientas de compilación
+RUN apk del build-base python3-dev gcc musl-dev linux-headers rust cargo
 
 # Copiar archivos de configuración y scripts específicos del addon
 COPY rootfs/ / 
