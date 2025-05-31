@@ -37,18 +37,19 @@ WORKDIR /app
 # Clonar el repositorio original de your-memory
 RUN git clone https://github.com/jonathan-politzki/your-memory.git .
 
-# Instalar dependencias de Python directamente con pip
-RUN pip3 install --no-cache-dir --upgrade pip && \
-    pip3 install --no-cache-dir \
-    qdrant-client==1.9.1 \
-    pydantic==2.7.3 \
-    openai==1.33.0 \
-    posthog==3.5.0 \
-    pytz==2024.1 \
-    sqlalchemy==2.0.31 \
-    langchain-neo4j==0.4.0 \
-    neo4j==5.23.1 \
-    rank-bm25==0.2.2
+# Actualizar pip y wheel
+RUN pip3 install --no-cache-dir --upgrade pip wheel setuptools
+
+# Instalar dependencias de Python una por una con verbosidad
+RUN pip3 install --no-cache-dir -v qdrant-client==1.9.1 && \
+    pip3 install --no-cache-dir -v pydantic==2.7.3 && \
+    pip3 install --no-cache-dir -v openai==1.33.0 && \
+    pip3 install --no-cache-dir -v posthog==3.5.0 && \
+    pip3 install --no-cache-dir -v pytz==2024.1 && \
+    pip3 install --no-cache-dir -v sqlalchemy==2.0.31 && \
+    pip3 install --no-cache-dir -v langchain-neo4j==0.4.0 && \
+    pip3 install --no-cache-dir -v neo4j==5.23.1 && \
+    pip3 install --no-cache-dir -v rank-bm25==0.2.2
 
 # Limpiar herramientas de compilación
 RUN apk del build-base python3-dev gcc musl-dev linux-headers rust cargo openssl-dev libffi-dev py3-setuptools
