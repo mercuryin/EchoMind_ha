@@ -39,4 +39,4 @@ homeassistant_api: true # Needs access to Home Assistant API
 hassio_api: true # Needs access to Supervisor API (e.g. for notifications, addon info)
 # Potentially use hassio_role for more fine-grained permissions in the future
 # hassio_role: default
-image: "ghcr.io/mercuryin/echomind-ha-addon/{arch}"
+image: "ghcr.io/mercuryin/EchoMind_ha/{arch}"
