@@ -51,7 +51,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            BUILD_FROM=ghcr.io/hassio-addons/base/amd64:14.0.0
+            BUILD_FROM=ghcr.io/hassio-addons/base/amd64:latest
 
       - name: Build and push Docker image for arm64
         uses: docker/build-push-action@v5
@@ -62,7 +62,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            BUILD_FROM=ghcr.io/hassio-addons/base/aarch64:14.0.0
+            BUILD_FROM=ghcr.io/hassio-addons/base/aarch64:latest
 
       - name: Build and push Docker image for armv7
         uses: docker/build-push-action@v5
@@ -73,4 +73,4 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            BUILD_FROM=ghcr.io/hassio-addons/base/armv7:14.0.0 
+            BUILD_FROM=ghcr.io/hassio-addons/base/armv7:latest 

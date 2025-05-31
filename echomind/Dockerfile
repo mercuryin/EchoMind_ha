@@ -10,12 +10,7 @@ LABEL io.hass.arch="$BUILD_ARCH"
 LABEL maintainer="mercuryin <[tu_email_o_contacto_aqui]>" 
 LABEL io.hass.url="https://github.com/mercuryin/EchoMind_ha"
 
-# Actualizar repositorios y limpiar caché
-RUN apk update && \
-    apk upgrade && \
-    rm -rf /var/cache/apk/*
-
-# Instalar dependencias del sistema y herramientas base
+# Instalar dependencias básicas
 RUN apk add --no-cache \
     bash \
     curl \
@@ -24,23 +19,7 @@ RUN apk add --no-cache \
     nodejs \
     npm \
     python3 \
-    py3-pip \
-    build-base \
-    python3-dev \
-    gcc \
-    musl-dev \
-    linux-headers \
-    rust \
-    cargo
-
-# Instalar dependencias de Python
-RUN pip3 install --no-cache-dir --upgrade pip && \
-    pip3 install --no-cache-dir \
-    wheel \
-    setuptools && \
-    pip3 install --no-cache-dir \
-    chromadb \
-    sentence-transformers
+    py3-pip
 
 # Crear directorio de trabajo para la aplicación Node.js
 WORKDIR /app
