@@ -22,11 +22,12 @@ RUN apk add --no-cache \
     python3-dev \
     gcc \
     musl-dev \
-    linux-headers
+    linux-headers \
+    nodejs \
+    npm
 
-# Instalar Node.js 18 (LTS)
-RUN apk add --no-cache nodejs npm && \
-    npm install -g npm@latest
+# Actualizar npm a la última versión
+RUN npm install -g npm@latest
 
 # Crear directorio de trabajo para la aplicación Node.js
 WORKDIR /app
@@ -34,8 +35,16 @@ WORKDIR /app
 # Clonar el repositorio original de your-memory
 RUN git clone https://github.com/jonathan-politzki/your-memory.git .
 
-# Instalar dependencias de Node.js con más verbosidad
-RUN npm install --production --legacy-peer-deps --verbose
+# Configurar npm para usar el registro público
+RUN npm config set registry https://registry.npmjs.org/
+
+# Limpiar caché de npm
+RUN npm cache clean --force
+
+# Intentar instalar dependencias con diferentes estrategias
+RUN npm install --no-package-lock --no-audit --no-fund --production --legacy-peer-deps || \
+    (npm install --no-package-lock --no-audit --no-fund --legacy-peer-deps && \
+     npm prune --production)
 
 # Limpiar herramientas de compilación para reducir el tamaño de la imagen
 RUN apk del build-base python3-dev gcc musl-dev linux-headers
