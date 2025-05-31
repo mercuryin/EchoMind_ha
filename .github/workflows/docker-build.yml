@@ -42,38 +42,50 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
       - name: Build and push Docker image for amd64
         uses: docker/build-push-action@v5
         with:
           context: ./echomind
+          file: ./echomind/Dockerfile
           push: true
           platforms: linux/amd64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            BUILD_FROM=ghcr.io/home-assistant/amd64-base:alpine3.18
+            BUILD_FROM=ghcr.io/home-assistant/amd64-base:3.21
+            BUILD_ARCH=amd64
+            BUILD_VERSION=${{ steps.meta.outputs.version }}
           pull: true
 
       - name: Build and push Docker image for arm64
         uses: docker/build-push-action@v5
         with:
           context: ./echomind
+          file: ./echomind/Dockerfile
           push: true
           platforms: linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            BUILD_FROM=ghcr.io/home-assistant/aarch64-base:alpine3.18
+            BUILD_FROM=ghcr.io/home-assistant/aarch64-base:3.21
+            BUILD_ARCH=aarch64
+            BUILD_VERSION=${{ steps.meta.outputs.version }}
           pull: true
 
       - name: Build and push Docker image for armv7
         uses: docker/build-push-action@v5
         with:
           context: ./echomind
+          file: ./echomind/Dockerfile
           push: true
           platforms: linux/arm/v7
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            BUILD_FROM=ghcr.io/home-assistant/armv7-base:alpine3.18
+            BUILD_FROM=ghcr.io/home-assistant/armv7-base:3.21
+            BUILD_ARCH=armv7
+            BUILD_VERSION=${{ steps.meta.outputs.version }}
           pull: true 
