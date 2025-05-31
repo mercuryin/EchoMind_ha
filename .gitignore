@@ -1,0 +1,46 @@
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de Node.js
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Archivos de Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Archivos de IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Archivos de entorno
+.env
+.env.local
+.env.*.local
+
+# Archivos de logs
+*.log
+logs/ 
