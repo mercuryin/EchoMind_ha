@@ -24,8 +24,8 @@ RUN apk add --no-cache \
 # Crear directorio de trabajo para la aplicación Node.js
 WORKDIR /app
 
-# Clonar tu fork de EchoMind
-RUN git clone https://github.com/mercuryin/your-memory.git .
+# Clonar el repositorio original de your-memory
+RUN git clone https://github.com/jonathan-politzki/your-memory.git .
 
 # Instalar dependencias de Node.js
 RUN npm install --production --legacy-peer-deps
