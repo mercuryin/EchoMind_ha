@@ -45,8 +45,8 @@ WORKDIR /app
 # Clonar el repositorio original de your-memory
 RUN git clone https://github.com/jonathan-politzki/your-memory.git .
 
-# Instalar dependencias de Python
-RUN poetry install --no-dev --no-interaction --no-ansi
+# Instalar dependencias de Python con más verbosidad
+RUN poetry install --no-dev --no-interaction --no-ansi -vv
 
 # Limpiar herramientas de compilación
 RUN apk del build-base python3-dev gcc musl-dev linux-headers rust cargo openssl-dev libffi-dev py3-setuptools
